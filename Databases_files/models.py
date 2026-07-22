@@ -19,6 +19,7 @@ class Facility(Base):
     sent_transfers = relationship("StockTransfer", foreign_keys="[StockTransfer.sender_facility_id]", back_populates="sender")
     received_transfers = relationship("StockTransfer", foreign_keys="[StockTransfer.receiver_facility_id]", back_populates="receiver")
     alerts = relationship("SystemAlert", back_populates="facility")
+    emergency_alerts = relationship("EmergencyAlert", back_populates="facility")
 
 
 class Medicine(Base):
@@ -66,6 +67,7 @@ class StockTransfer(Base):
     sender = relationship("Facility", foreign_keys=[sender_facility_id], back_populates="sent_transfers")
     receiver = relationship("Facility", foreign_keys=[receiver_facility_id], back_populates="received_transfers")
     medicine = relationship("Medicine", back_populates="transfers")
+    objections = relationship("Objection", back_populates="transfer", cascade="all, delete-orphan")
 
 
 class SystemAlert(Base):
@@ -81,3 +83,32 @@ class SystemAlert(Base):
     # Relationships
     facility = relationship("Facility", back_populates="alerts")
     medicine = relationship("Medicine", back_populates="alerts")
+
+
+class Objection(Base):
+    __tablename__ = "objections"
+
+    id = Column(Integer, primary_key=True, index=True)
+    transfer_id = Column(Integer, ForeignKey("stock_transfers.id"), nullable=False)
+    reason = Column(String, nullable=False)
+    submitted_by = Column(String, nullable=False)
+    status = Column(String, default="Pending")  # e.g., Pending, Reviewed, Resolved
+    timestamp = Column(DateTime, default=datetime.datetime.utcnow)
+
+    # Relationships
+    transfer = relationship("StockTransfer", back_populates="objections")
+
+
+class EmergencyAlert(Base):
+    __tablename__ = "emergency_alerts"
+
+    id = Column(Integer, primary_key=True, index=True)
+    facility_id = Column(Integer, ForeignKey("facilities.id"), nullable=False)
+    alert_type = Column(String, nullable=False)  # e.g., Epidemic Outbreak, Acute Shortage
+    description = Column(String)
+    severity = Column(String, default="Critical")  # e.g., Critical, High, Medium, Low
+    status = Column(String, default="Active")  # e.g., Active, Resolved
+    timestamp = Column(DateTime, default=datetime.datetime.utcnow)
+
+    # Relationships
+    facility = relationship("Facility", back_populates="emergency_alerts")
