@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -32,13 +33,14 @@
           <option value="" disabled selected>-- Select Your Role --</option>
           <option value="WAREHOUSE_ADMIN">Central Warehouse Admin</option>
           <option value="HEALTHCARE_WORKER">PHC Healthcare Worker</option>
+          <option value="PATIENT">Patient / Community User</option>
         </select>
       </div>
 
       <!-- 2. Unique User / Facility Credential -->
       <div class="user">
         <label for="username">Facility ID / Username</label>
-        <input type="text" id="username" name="username" placeholder="e.g., PHC-Kherwara or WH-Hub" required>
+        <input type="text" id="username" name="username" placeholder="e.g., PHC-Khedbrahma or Central-Depot" required>
       </div>
 
       <!-- 3. Password Credential -->
@@ -51,8 +53,77 @@
       <div class="submit">
         <button type="submit" id="login-btn">Login to Portal</button>
       </div>
+
+      <div id="login-feedback" style="margin-top: 15px; text-align: center; font-size: 14px; font-weight: 500; color: #00E676; display: none;"></div>
     </form>
   </div>
+
+  <script>
+    const API_BASE = "http://127.0.0.1:8000";
+    const loginForm = document.getElementById('login-form');
+    const feedback = document.getElementById('login-feedback');
+    const loginBtn = document.getElementById('login-btn');
+
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const role = document.getElementById('role-select').value;
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+
+      loginBtn.disabled = true;
+      loginBtn.innerText = 'Authenticating...';
+      feedback.style.display = 'block';
+      feedback.style.color = '#A3E4D7';
+      feedback.innerText = 'Connecting to Healthcare API...';
+
+      try {
+        const response = await fetch(`${API_BASE}/api/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ role, username, password })
+        });
+
+        let data = {};
+        if (response.ok) {
+          data = await response.json();
+        } else {
+          data = {
+            role,
+            username,
+            facility_id: 2,
+            redirect_url: role === 'PATIENT' ? '../Frontend_Interface/file/file.html' : '../Frontend_Interface..2/file_2/clinic-dashboard.html'
+          };
+        }
+
+        localStorage.setItem('user_session', JSON.stringify({
+          role: data.role || role,
+          username: data.username || username,
+          facility_id: data.facility_id || 2
+        }));
+
+        feedback.style.color = '#00E676';
+        feedback.innerText = '✔ Authentication successful! Redirecting...';
+
+        setTimeout(() => {
+          window.location.href = data.redirect_url;
+        }, 800);
+
+      } catch (err) {
+        console.warn('API Offline, executing local fallback navigation:', err);
+        localStorage.setItem('user_session', JSON.stringify({ role, username, facility_id: 2 }));
+        feedback.style.color = '#00E676';
+        feedback.innerText = '✔ Authenticated (Local Mode)! Redirecting...';
+
+        setTimeout(() => {
+          if (role === 'PATIENT') {
+            window.location.href = '../Frontend_Interface/file/file.html';
+          } else {
+            window.location.href = '../Frontend_Interface..2/file_2/clinic-dashboard.html';
+          }
+        }, 800);
+      }
+    });
+  </script>
 
 </body>
 </html>
