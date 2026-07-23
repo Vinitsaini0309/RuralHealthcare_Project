@@ -3,48 +3,56 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>Healthcare Services Portal - Login</title>
+  <!-- Load font stylesheet -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="login.css">
 </head>
 <body>
+
   <div class="Auth-form">
-<form id="login-form">
-  <div class="heading">
-    <h2>Healthcare Services Portal Login</h2>
+    <form id="login-form">
+      <div class="heading">
+        <!-- Medical Heart/Pulse Heartbeat Icon -->
+        <div class="heading-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" height="28" viewBox="0 -960 960 960" width="28">
+            <path d="M480-120q-12 0-23-4.5t-21-13.5Q304-266 218-356.5T105-520q-19-33-27-68t-8-72q0-108 72-180t180-72q65 0 119.5 29.5T520-800q16-17 35-31.5t42-22q-27 15-46.5 37.5T529-768l-30 45q-9 13-23.5 13t-23.5-13l-45-67H220q-75 0-127.5 52.5T40-560q0 73 39 146.5T202-273.5q81 83 189 166.5l89 69 89-69q108-83.5 189-166.5T920-413.5Q959-487 959-560q0-75-52.5-127.5T779-740h-75.5q-15.5 0-25.5-10.5T668-776l-18-54q-10-30-36.5-47t-57.5-12q-35 5-61 24.5T456-822l-18 27q-9 13-23.5 13t-23.5-13l-18-27q-15-22-41-38.5T275-879q-2 29 7.5 56.5T314-770l30 50h435q75 0 127.5 52.5T959-560q0 37-8 72t-27 68Q838-330 752-239.5T600-123l-37 28q-18 14-38.5 19.5T480-120Z"/>
+            <path d="M480-280q-12 0-23-5t-21-15l-136-136q-9-9-9-21.5t9-21.5q9-9 21.5-9t21.5 9l114 114 266-266q9-9 21.5-9t21.5 9q9 9 9 21.5t-9 21.5L524-300q-10 10-21 15t-23 5Z"/>
+          </svg>
+        </div>
+        <h2>Healthcare Portal Login</h2>
+      </div>
+
+      <!-- 1. Role Selection -->
+      <div class="rollchoice">
+        <label for="role-select">Select Access Role</label>
+        <select id="role-select" name="role" required>
+          <option value="" disabled selected>-- Select Your Role --</option>
+          <option value="WAREHOUSE_ADMIN">Central Warehouse Admin</option>
+          <option value="HEALTHCARE_WORKER">PHC Healthcare Worker</option>
+        </select>
+      </div>
+
+      <!-- 2. Unique User / Facility Credential -->
+      <div class="user">
+        <label for="username">Facility ID / Username</label>
+        <input type="text" id="username" name="username" placeholder="e.g., PHC-Kherwara or WH-Hub" required>
+      </div>
+
+      <!-- 3. Password Credential -->
+      <div class="password">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="Enter your password" required>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="submit">
+        <button type="submit" id="login-btn">Login to Portal</button>
+      </div>
+    </form>
   </div>
-  
 
-  <!-- 1. Role Selection -->
-   <div class="rollchoice">
-    <label for="role-select">Select Access Role:</label>
-  <select id="role-select" name="role" required>
-    <option value="" disabled selected>-- Select Your Role --</option>
-    <option value="WAREHOUSE_ADMIN">Central Warehouse Admin</option>
-    <option value="HEALTHCARE_WORKER">PHC Healthcare Worker</option>
-  </select>
-   </div>
-  
-
-  <!-- 2. Unique User / Facility Credential -->
-   <div class="user">
-    <label for="username">Facility ID / Username:</label>
-  <input type="text" id="username" name="username" placeholder="e.g., PHC-Kherwara or WH-Hub" required>
-
-   </div>
-  
-  <!-- 3. Password Credential -->
-   <div class="password">
-    <label for="password">Password:</label>
-  <input type="password" id="password" name="password" placeholder="Enter your password" required>
-
-   </div>
-  
-  <!-- Submit Button -->
- <div class="submit">
-   <button type="submit" id="login-btn">Login to Portal</button>
- </div>
-</form>
-</div>
-  
 </body>
 </html>
