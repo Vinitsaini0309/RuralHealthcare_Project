@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="login.css">
+</head>
+<body>
+  <div class="Auth-form">
+<form id="login-form">
+  <div class="heading">
+    <h2>Healthcare Services Portal Login</h2>
+  </div>
+  
+
+  <!-- 1. Role Selection -->
+   <div class="rollchoice">
+    <label for="role-select">Select Access Role:</label>
+  <select id="role-select" name="role" required>
+    <option value="" disabled selected>-- Select Your Role --</option>
+    <option value="WAREHOUSE_ADMIN">Central Warehouse Admin</option>
+    <option value="HEALTHCARE_WORKER">PHC Healthcare Worker</option>
+  </select>
+   </div>
+  
+
+  <!-- 2. Unique User / Facility Credential -->
+   <div class="user">
+    <label for="username">Facility ID / Username:</label>
+  <input type="text" id="username" name="username" placeholder="e.g., PHC-Kherwara or WH-Hub" required>
+
+   </div>
+  
+  <!-- 3. Password Credential -->
+   <div class="password">
+    <label for="password">Password:</label>
+  <input type="password" id="password" name="password" placeholder="Enter your password" required>
+
+   </div>
+  
+  <!-- Submit Button -->
+ <div class="submit">
+   <button type="submit" id="login-btn">Login to Portal</button>
+ </div>
+</form>
+</div>
+  
+</body>
+</html>

@@ -1,0 +1,32 @@
+body {
+    font-family: sans-serif;
+    font-weight: 400;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+
+
+
+}
+.Auth-form{
+    height: 450px;
+    width: 400px;
+    display: flex;
+    justify-content: center;
+   border: 6px solid rgb(40, 243, 128);
+   border-radius: 10px;
+    background-color: aqua;
+    box-sizing: border-box;
+}
+div{
+    padding-top: 40px;
+}
+.submit {
+    display: flex;
+    justify-content: center;
+}
+.heading{
+    padding-top: 5px;
+    border-bottom: 3px solid whitesmoke;
+}
