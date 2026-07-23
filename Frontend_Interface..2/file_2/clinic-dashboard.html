@@ -1,0 +1,691 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>St. Jude Emergency Care - Clinic Dashboard</title>
+  <meta name="description" content="St. Jude Clinic Dispensing, Prescription Scanner, & Inventory Portal.">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- DASHBOARD LAYOUT -->
+  <div class="dashboard-layout">
+
+    <!-- SIDEBAR NAVIGATION -->
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-badge">
+          <i class="fa-solid fa-hospital brand-icon"></i>
+        </div>
+        <div class="brand-info">
+          <h2>ST. JUDE <span class="highlight">CLINIC</span></h2>
+          <span class="sub-text">Emergency Care & ICU Unit</span>
+        </div>
+      </div>
+
+      <div class="manager-card">
+        <div class="avatar-box">
+          <i class="fa-solid fa-user-doctor"></i>
+        </div>
+        <div class="manager-info">
+          <span class="m-name">Dr. Sarah Jenkins</span>
+          <span class="m-role"><i class="fa-solid fa-stethoscope"></i> Chief Medical Officer</span>
+        </div>
+      </div>
+
+      <!-- Navigation Links -->
+      <nav class="sidebar-nav">
+        <div class="nav-section-title">CLINIC DISPENSING & CARE</div>
+        
+        <button class="nav-btn active" data-tab="tab-overview">
+          <i class="fa-solid fa-chart-pie"></i>
+          <span>Clinic Overview</span>
+        </button>
+
+        <button class="nav-btn" data-tab="tab-rx-scanner">
+          <i class="fa-solid fa-file-prescription"></i>
+          <span>5. Prescription Scanner</span>
+          <span class="nav-badge pulse-badge">Core Rx</span>
+        </button>
+
+        <button class="nav-btn" data-tab="tab-stock-log">
+          <i class="fa-solid fa-boxes-stacked"></i>
+          <span>1. Received & Dispensed Log</span>
+        </button>
+
+        <button class="nav-btn" data-tab="tab-alerts">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+          <span>2. Own Facility Low Stock</span>
+          <span class="nav-badge orange-badge">2 Low</span>
+        </button>
+
+        <button class="nav-btn" data-tab="tab-requests">
+          <i class="fa-solid fa-hand-holding-medical"></i>
+          <span>3. Request Restock</span>
+          <span class="nav-badge blue-badge">1 Active</span>
+        </button>
+
+        <button class="nav-btn" data-tab="tab-incoming">
+          <i class="fa-solid fa-truck-fast"></i>
+          <span>4. Incoming Delivery ETA</span>
+          <span class="nav-badge green-badge">Live ETA</span>
+        </button>
+
+        <button class="nav-btn" data-tab="tab-arrival-scan">
+          <i class="fa-solid fa-barcode"></i>
+          <span>6. Arrival Barcode Scan</span>
+        </button>
+
+        <button class="nav-btn" data-tab="tab-objections">
+          <i class="fa-solid fa-circle-exclamation"></i>
+          <span>7. Flag Delivery Issue</span>
+        </button>
+
+        <button class="nav-btn" data-tab="tab-camps">
+          <i class="fa-solid fa-tent"></i>
+          <span>8. Local Camps & Drives</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <a href="index.html" class="logout-btn">
+          <i class="fa-solid fa-arrow-right-from-bracket"></i>
+          <span>Return to Portal Login</span>
+        </a>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+      
+      <!-- TOP BAR -->
+      <header class="top-header">
+        <div class="header-search">
+          <i class="fa-solid fa-magnifying-glass search-icon"></i>
+          <input type="text" placeholder="Search patient Rx, drug name, or stock item..." class="header-input">
+        </div>
+
+        <div class="top-actions">
+          <div class="status-chip">
+            <span class="green-dot"></span> Emergency Room Open 24/7
+          </div>
+
+          <div class="notification-box" title="Notifications">
+            <i class="fa-solid fa-bell"></i>
+            <span class="notif-dot"></span>
+          </div>
+
+          <div class="clinic-network-badge">
+            <i class="fa-solid fa-warehouse"></i> Linked to Central Depot #01
+          </div>
+        </div>
+      </header>
+
+      <!-- TAB 1: OVERVIEW -->
+      <section class="tab-page active" id="tab-overview">
+        <div class="page-title-row">
+          <div>
+            <h1 class="page-heading">St. Jude Clinic Operations</h1>
+            <p class="page-sub">Patient Dispensing, Stock Receiving, Prescription Scanning & Restock Tracking</p>
+          </div>
+          <button class="primary-btn Cartoon-btn" id="quick-rx-btn">
+            <i class="fa-solid fa-file-prescription"></i> Scan Patient Rx
+          </button>
+        </div>
+
+        <!-- Metrics Grid -->
+        <div class="metrics-grid">
+          <div class="metric-card card-mint">
+            <div class="m-icon-box"><i class="fa-solid fa-pills"></i></div>
+            <div class="m-details">
+              <span class="m-label">Floor Stock Items</span>
+              <h3 class="m-value">4,120 <span class="m-unit">units</span></h3>
+              <span class="m-trend positive"><i class="fa-solid fa-circle-check"></i> Ready for patients</span>
+            </div>
+          </div>
+
+          <div class="metric-card card-sage">
+            <div class="m-icon-box"><i class="fa-solid fa-file-prescription"></i></div>
+            <div class="m-details">
+              <span class="m-label">Today's Rx Dispensed</span>
+              <h3 class="m-value">48 Patients <span class="m-unit">served</span></h3>
+              <span class="m-trend positive"><i class="fa-solid fa-arrow-trend-up"></i> +8% today</span>
+            </div>
+          </div>
+
+          <div class="metric-card card-peach">
+            <div class="m-icon-box"><i class="fa-solid fa-truck-ramp-box"></i></div>
+            <div class="m-details">
+              <span class="m-label">Incoming Shipment</span>
+              <h3 class="m-value">Truck #MD-04 <span class="m-unit">en route</span></h3>
+              <span class="m-trend warning"><i class="fa-solid fa-stopwatch"></i> ETA: 12 Mins</span>
+            </div>
+          </div>
+
+          <div class="metric-card card-sky">
+            <div class="m-icon-box"><i class="fa-solid fa-tent"></i></div>
+            <div class="m-details">
+              <span class="m-label">Local Drives</span>
+              <h3 class="m-value">1 Active <span class="m-unit">camp</span></h3>
+              <span class="m-trend info"><i class="fa-solid fa-heart-pulse"></i> Vaccination Drive</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Overview Split -->
+        <div class="dashboard-split">
+          <!-- Rx Scanner Banner preview -->
+          <div class="content-box">
+            <div class="box-header">
+              <h3><i class="fa-solid fa-qrcode color-primary"></i> Rapid Prescription Dispenser</h3>
+              <span class="view-all-link" data-target="tab-rx-scanner">Open Scanner</span>
+            </div>
+            <div class="rx-quick-card">
+              <div class="rx-info">
+                <i class="fa-solid fa-prescription-bottle-medical rx-icon"></i>
+                <div>
+                  <h4>Ready to Scan Patient Prescription</h4>
+                  <p>Scan barcode or upload Rx slip to auto-deduct clinic stock and print label.</p>
+                </div>
+              </div>
+              <button class="primary-btn Cartoon-btn margin-top-10" onclick="switchTab('tab-rx-scanner')">
+                <i class="fa-solid fa-barcode"></i> LAUNCH RX SCANNER
+              </button>
+            </div>
+          </div>
+
+          <!-- Incoming Delivery Live Preview -->
+          <div class="content-box">
+            <div class="box-header">
+              <h3><i class="fa-solid fa-truck-medical color-primary"></i> Incoming Warehouse Truck</h3>
+              <span class="view-all-link" data-target="tab-incoming">Live Map</span>
+            </div>
+            <div class="dispatch-mini-card">
+              <div class="truck-mini-info">
+                <div class="truck-avatar"><i class="fa-solid fa-truck-fast"></i></div>
+                <div>
+                  <h4>Truck #MD-04 (Oxygen & Saline)</h4>
+                  <p>Status: Dispatched from Central Depot</p>
+                </div>
+              </div>
+              <div class="progress-bar-wrap">
+                <div class="progress-bar-fill" style="width: 72%;"></div>
+              </div>
+              <div class="truck-meta-row">
+                <span><i class="fa-solid fa-location-dot"></i> 2.8 km away</span>
+                <span class="eta-tag"><i class="fa-solid fa-clock"></i> ETA: 12 Mins</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 5: PRESCRIPTION SCANNER (CORE CLINIC FEATURE) -->
+      <section class="tab-page" id="tab-rx-scanner">
+        <div class="page-title-row">
+          <div>
+            <h1 class="page-heading">5. Prescription Scanner & Auto-Dispenser</h1>
+            <p class="page-sub">Scan a patient prescription QR/barcode or paper slip → auto-identifies prescribed medicines → dispense & auto-deduct clinic inventory.</p>
+          </div>
+        </div>
+
+        <div class="scanner-layout">
+          <!-- Rx Scan Frame -->
+          <div class="scanner-card">
+            <div class="viewfinder-box">
+              <div class="laser-line"></div>
+              <div class="scan-frame">
+                <i class="fa-solid fa-file-prescription barcode-anim"></i>
+              </div>
+              <span class="scan-instruction">Align Patient Prescription QR / Barcode within box</span>
+            </div>
+
+            <button class="primary-btn Cartoon-btn width-100 margin-top-15" id="scan-rx-btn">
+              <i class="fa-solid fa-qrcode"></i> SCAN PRESCRIPTION (#RX-88402)
+            </button>
+          </div>
+
+          <!-- Prescription Dispense Ticket -->
+          <div class="content-box flex-1">
+            <div class="box-header">
+              <h3><i class="fa-solid fa-receipt color-primary"></i> Prescription Manifest #RX-88402</h3>
+              <span class="tag tag-green" id="rx-status-tag">Status: Ready to Dispense</span>
+            </div>
+
+            <div class="rx-patient-details">
+              <div class="p-detail"><strong>Patient Name:</strong> Johnathan Doe (Age: 42)</div>
+              <div class="p-detail"><strong>Prescribing Doctor:</strong> Dr. Sarah Jenkins</div>
+              <div class="p-detail"><strong>Diagnosis:</strong> Acute Respiratory Tract Infection</div>
+            </div>
+
+            <table class="styled-table margin-top-15">
+              <thead>
+                <tr>
+                  <th>Prescribed Medicine</th>
+                  <th>Dosage</th>
+                  <th>Qty</th>
+                  <th>Clinic Floor Stock</th>
+                  <th>Match Status</th>
+                </tr>
+              </thead>
+              <tbody id="rx-items-tbody">
+                <tr>
+                  <td><strong>Amoxicillin 500mg</strong></td>
+                  <td>1 capsule 3x / day</td>
+                  <td>21 caps</td>
+                  <td><span class="tag tag-green">140 in stock</span></td>
+                  <td><span class="status-chip chip-green">MATCHED & RESERVED</span></td>
+                </tr>
+                <tr>
+                  <td><strong>Paracetamol 650mg</strong></td>
+                  <td>1 tablet as needed</td>
+                  <td>10 tabs</td>
+                  <td><span class="tag tag-green">450 in stock</span></td>
+                  <td><span class="status-chip chip-green">MATCHED & RESERVED</span></td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="dispense-actions margin-top-20">
+              <button class="primary-btn Cartoon-btn lg-btn" id="confirm-dispense-btn">
+                <i class="fa-solid fa-box-open"></i> CONFIRM DISPENSE & DEDUCT CLINIC STOCK
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 1: RECEIVED & DISPENSED LOG -->
+      <section class="tab-page" id="tab-stock-log">
+        <div class="page-title-row">
+          <div>
+            <h1 class="page-heading">1. Stock Entry (Received & Consumed Log)</h1>
+            <p class="page-sub">Ground-truth log recording stock received from warehouse deliveries and consumed by patient dispensations.</p>
+          </div>
+        </div>
+
+        <div class="content-box">
+          <div class="box-header">
+            <h3><i class="fa-solid fa-list-check color-primary"></i> Facility Ground-Truth Stock Tally</h3>
+            <button class="primary-btn Cartoon-btn" id="log-consumption-btn">
+              <i class="fa-solid fa-plus"></i> Manual Dispense Log
+            </button>
+          </div>
+
+          <table class="styled-table">
+            <thead>
+              <tr>
+                <th>Log ID</th>
+                <th>Medicine / Item</th>
+                <th>Type</th>
+                <th>Quantity</th>
+                <th>Source / Patient</th>
+                <th>Logged Date</th>
+              </tr>
+            </thead>
+            <tbody id="stock-log-tbody">
+              <tr>
+                <td>#LOG-1042</td>
+                <td>Amoxicillin 500mg</td>
+                <td><span class="tag tag-red">CONSUMED (DISPENSED)</span></td>
+                <td>-21 caps</td>
+                <td>Patient: Johnathan Doe (#RX-88402)</td>
+                <td>Today, 10:15 AM</td>
+              </tr>
+              <tr>
+                <td>#LOG-1041</td>
+                <td>Oxygen Cylinders 10L</td>
+                <td><span class="tag tag-green">RECEIVED (DELIVERY)</span></td>
+                <td>+10 units</td>
+                <td>Warehouse Delivery Truck #MD-02</td>
+                <td>Yesterday</td>
+              </tr>
+              <tr>
+                <td>#LOG-1040</td>
+                <td>Saline IV Bags 500ml</td>
+                <td><span class="tag tag-red">CONSUMED (DISPENSED)</span></td>
+                <td>-4 bags</td>
+                <td>Emergency ICU Patient Care</td>
+                <td>Yesterday</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- TAB 2: OWN FACILITY LOW STOCK -->
+      <section class="tab-page" id="tab-alerts">
+        <div class="page-title-row">
+          <div>
+            <h1 class="page-heading">2. Own-Facility Low Stock & Expiry Alerts</h1>
+            <p class="page-sub">Dedicated view of St. Jude Emergency Clinic's stock only, uncluttered by other facilities.</p>
+          </div>
+        </div>
+
+        <div class="alerts-grid">
+          <!-- Alert 1 -->
+          <div class="alert-card critical-alert">
+            <div class="alert-header">
+              <div class="location-badge red-badge"><i class="fa-solid fa-hospital"></i> St. Jude Floor Stock</div>
+              <span class="alert-tag">CRITICAL LOW</span>
+            </div>
+            <div class="alert-body">
+              <h4>Oxygen Cylinders 10L</h4>
+              <p>Current Stock: <strong>12 units</strong> (Minimum threshold: 40 units)</p>
+              <div class="stock-progress">
+                <div class="progress-fill fill-red" style="width: 28%;"></div>
+              </div>
+            </div>
+            <div class="alert-footer">
+              <span><i class="fa-solid fa-triangle-exclamation"></i> Emergency ICU Supply Low</span>
+              <button class="restock-btn" onclick="requestRestockForItem('Oxygen Cylinders 10L')">
+                <i class="fa-solid fa-paper-plane"></i> Request Restock
+              </button>
+            </div>
+          </div>
+
+          <!-- Alert 2 -->
+          <div class="alert-card warning-alert">
+            <div class="alert-header">
+              <div class="location-badge orange-badge"><i class="fa-solid fa-hospital"></i> St. Jude Pharmacy</div>
+              <span class="alert-tag">WARNING LOW</span>
+            </div>
+            <div class="alert-body">
+              <h4>Saline IV Solution 500ml</h4>
+              <p>Current Stock: <strong>35 bags</strong> (Minimum threshold: 100 bags)</p>
+              <div class="stock-progress">
+                <div class="progress-fill fill-orange" style="width: 35%;"></div>
+              </div>
+            </div>
+            <div class="alert-footer">
+              <span><i class="fa-solid fa-clock"></i> Recommended restock today</span>
+              <button class="restock-btn" onclick="requestRestockForItem('Saline IV Solution 500ml')">
+                <i class="fa-solid fa-paper-plane"></i> Request Restock
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 3: REQUEST RESTOCK -->
+      <section class="tab-page" id="tab-requests">
+        <div class="page-title-row">
+          <div>
+            <h1 class="page-heading">3. Transfer Request & Status Tracker (Requesting Side)</h1>
+            <p class="page-sub">Request stock from Central Warehouse Depot and track request status in real-time.</p>
+          </div>
+          <button class="primary-btn Cartoon-btn" id="open-request-modal-btn">
+            <i class="fa-solid fa-plus"></i> Submit New Restock Request
+          </button>
+        </div>
+
+        <div class="content-box">
+          <table class="styled-table">
+            <thead>
+              <tr>
+                <th>Request ID</th>
+                <th>Requested Item</th>
+                <th>Quantity</th>
+                <th>Urgency Level</th>
+                <th>Request Status</th>
+                <th>Action / Tracking</th>
+              </tr>
+            </thead>
+            <tbody id="clinic-requests-tbody">
+              <tr>
+                <td>#TR-4091</td>
+                <td>Saline Solution 0.9% (1000ml)</td>
+                <td>300 bags</td>
+                <td><span class="tag tag-red">Emergency ICU Surge</span></td>
+                <td><span class="status-chip chip-yellow">Pending Warehouse Approval</span></td>
+                <td><button class="table-btn approve-btn-sm" onclick="switchTab('tab-incoming')">View ETA Map</button></td>
+              </tr>
+              <tr>
+                <td>#TR-3890</td>
+                <td>Amoxicillin 500mg Capsules</td>
+                <td>200 boxes</td>
+                <td><span class="tag tag-green">Normal Restock</span></td>
+                <td><span class="status-chip chip-green">Approved & In Transit</span></td>
+                <td><button class="table-btn approve-btn-sm" onclick="switchTab('tab-incoming')">View ETA Map</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- TAB 4: INCOMING DELIVERY ETA -->
+      <section class="tab-page" id="tab-incoming">
+        <div class="page-title-row">
+          <div>
+            <h1 class="page-heading">4. Incoming Delivery Tracking (Receiving View)</h1>
+            <p class="page-sub">Read-only live map showing incoming warehouse delivery truck's position and estimated arrival time.</p>
+          </div>
+        </div>
+
+        <div class="dispatch-map-card">
+          <div class="map-header">
+            <span class="live-dot-pulse"></span> INCOMING TRUCK #MD-04 LIVE RADAR
+            <span class="map-speed-control">
+              Destination: <strong>St. Jude Emergency Bay</strong>
+            </span>
+          </div>
+
+          <div class="map-arena">
+            <div class="map-grid"></div>
+
+            <div class="map-node node-warehouse">
+              <i class="fa-solid fa-warehouse"></i>
+              <span>Central Depot</span>
+            </div>
+
+            <div class="map-node node-hospital">
+              <i class="fa-solid fa-hospital"></i>
+              <span>St. Jude (You)</span>
+            </div>
+
+            <svg class="map-svg-path" viewBox="0 0 600 240">
+              <path d="M 60,120 Q 300,40 540,120" fill="none" stroke="#2E7D32" stroke-width="4" stroke-dasharray="8 6"/>
+            </svg>
+
+            <div class="map-truck-icon" id="clinic-map-truck">
+              <i class="fa-solid fa-truck-medical"></i>
+              <div class="map-truck-label">Truck #MD-04 (ETA: 12 Mins)</div>
+            </div>
+          </div>
+
+          <div class="map-footer-stats">
+            <div class="stat"><i class="fa-solid fa-boxes-packing"></i> Manifest: <strong>Oxygen Cylinders & Saline</strong></div>
+            <div class="stat"><i class="fa-solid fa-location-dot"></i> Distance Left: <strong>2.8 km</strong></div>
+            <div class="stat"><i class="fa-solid fa-clock"></i> Estimated Arrival: <strong>12 Mins</strong></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 6: ARRIVAL BARCODE SCAN -->
+      <section class="tab-page" id="tab-arrival-scan">
+        <div class="page-title-row">
+          <div>
+            <h1 class="page-heading">6. Arrival Barcode Scanner (Batch Receipt Verification)</h1>
+            <p class="page-sub">Scan batch barcodes when the truck arrives at clinic receiving dock → auto-credits verified items into clinic inventory.</p>
+          </div>
+        </div>
+
+        <div class="scanner-layout">
+          <div class="scanner-card">
+            <div class="viewfinder-box">
+              <div class="laser-line"></div>
+              <div class="scan-frame">
+                <i class="fa-solid fa-barcode barcode-anim"></i>
+              </div>
+              <span class="scan-instruction">Scan arriving box barcode at receiving dock</span>
+            </div>
+
+            <button class="primary-btn Cartoon-btn width-100 margin-top-15" id="scan-arrival-btn">
+              <i class="fa-solid fa-qrcode"></i> SCAN ARRIVING BATCH (BEEP)
+            </button>
+          </div>
+
+          <div class="content-box flex-1">
+            <div class="box-header">
+              <h3><i class="fa-solid fa-clipboard-check color-primary"></i> Receipt Manifest Truck #MD-04</h3>
+              <span class="tag tag-green" id="arrival-status-tag">Arrival Verified: 2 / 2 Batches</span>
+            </div>
+
+            <ul class="manifest-list">
+              <li class="manifest-item scanned">
+                <i class="fa-solid fa-circle-check check-icon"></i>
+                <div>
+                  <strong>Oxygen Cylinders 10L (Batch #OX-9910)</strong>
+                  <span class="sub">10 Units &bull; Credited to ICU Inventory</span>
+                </div>
+                <span class="tag tag-green">STOCK CREDITED</span>
+              </li>
+
+              <li class="manifest-item scanned">
+                <i class="fa-solid fa-circle-check check-icon"></i>
+                <div>
+                  <strong>Saline Solution 0.9% (Batch #SL-2201)</strong>
+                  <span class="sub">300 Bags &bull; Credited to Floor Inventory</span>
+                </div>
+                <span class="tag tag-green">STOCK CREDITED</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 7: FLAG DELIVERY ISSUE -->
+      <section class="tab-page" id="tab-objections">
+        <div class="page-title-row">
+          <div>
+            <h1 class="page-heading">7. Flag Delivery Objection (Raising Side)</h1>
+            <p class="page-sub">Flag problems immediately upon delivery arrival (damaged goods, short quantity, wrong batch) to notify the Warehouse Owner.</p>
+          </div>
+        </div>
+
+        <div class="form-card-container">
+          <form class="cartoon-form" id="raise-objection-form">
+            <div class="form-section-title">
+              <i class="fa-solid fa-circle-exclamation"></i> Delivery Issue Ticket Form
+            </div>
+
+            <div class="form-grid-3">
+              <div class="form-group">
+                <label class="field-label">Shipment / Truck ID</label>
+                <select class="styled-select" required id="obj-shipment">
+                  <option value="Truck #MD-04 (Batch #OX-9910)">Truck #MD-04 (Batch #OX-9910)</option>
+                  <option value="Truck #MD-02 (Batch #NV-44120)">Truck #MD-02 (Batch #NV-44120)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="field-label">Issue Category</label>
+                <select class="styled-select" required id="obj-category">
+                  <option value="Damaged Packaging / Goods">Damaged Packaging / Broken Seals</option>
+                  <option value="Quantity Mismatch">Quantity Mismatch (Items Missing)</option>
+                  <option value="Wrong Batch Delivered">Wrong Batch Delivered</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="field-label">Affected Quantity</label>
+                <input type="text" class="styled-input" id="obj-qty" placeholder="e.g. 5 vials broken" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="field-label">Detailed Problem Notes for Warehouse Manager</label>
+              <textarea class="styled-textarea" id="obj-notes" rows="3" placeholder="Describe the condition of package upon arrival..."></textarea>
+            </div>
+
+            <button type="submit" class="primary-btn Cartoon-btn lg-btn red-btn-btn">
+              <i class="fa-solid fa-paper-plane"></i> SUBMIT OBJECTION TICKET TO WAREHOUSE
+            </button>
+          </form>
+        </div>
+      </section>
+
+      <!-- TAB 8: LOCAL CAMPS -->
+      <section class="tab-page" id="tab-camps">
+        <div class="page-title-row">
+          <div>
+            <h1 class="page-heading">8. Local Medical Camp & Epidemic Response Tasks</h1>
+            <p class="page-sub">Manage local vaccination drives and community health camps organized by St. Jude Clinic.</p>
+          </div>
+        </div>
+
+        <div class="alerts-grid">
+          <div class="alert-card surge-card">
+            <div class="alert-header">
+              <div class="location-badge green-badge"><i class="fa-solid fa-tent"></i> Local Clinic Drive</div>
+              <span class="alert-tag">ACTIVE CAMP</span>
+            </div>
+            <div class="alert-body">
+              <h4>Community Flu Vaccination Drive</h4>
+              <p>Target: <strong>500 Local Residents</strong> &bull; Deadline: This Friday</p>
+              <div class="stock-progress">
+                <div class="progress-fill fill-green" style="width: 60%;"></div>
+              </div>
+            </div>
+            <div class="alert-footer">
+              <span><i class="fa-solid fa-syringe"></i> Vials Allocated: 300 / 500</span>
+              <button class="restock-btn" onclick="alert('✅ Pre-buffer requested from warehouse!')">Request Camp Buffer</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- RESTOCK REQUEST MODAL -->
+  <div class="modal-backdrop" id="request-modal">
+    <div class="modal-card cartoon-modal">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-paper-plane color-primary"></i> Request Stock from Warehouse</h3>
+        <button class="close-modal-btn" id="close-req-modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="field-label">Select Item Needed</label>
+          <select class="styled-select" id="req-item-name">
+            <option value="Oxygen Cylinders 10L">Oxygen Cylinders 10L</option>
+            <option value="Saline Solution 0.9% (1000ml)">Saline Solution 0.9% (1000ml)</option>
+            <option value="Amoxicillin 500mg Capsules">Amoxicillin 500mg Capsules</option>
+          </select>
+        </div>
+
+        <div class="form-group margin-top-10">
+          <label class="field-label">Quantity Required</label>
+          <input type="number" class="styled-input" id="req-item-qty" placeholder="e.g. 200" min="1">
+        </div>
+
+        <div class="form-group margin-top-10">
+          <label class="field-label">Urgency Level</label>
+          <select class="styled-select" id="req-item-urgency">
+            <option value="Emergency ICU Surge">Emergency ICU Surge (High Priority)</option>
+            <option value="Routine Restock">Routine Restock</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="secondary-btn" id="cancel-req-btn">Cancel</button>
+        <button class="primary-btn Cartoon-btn" id="submit-req-btn">SUBMIT REQUEST TO WAREHOUSE</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="clinic-app.js"></script>
+</body>
+</html>
