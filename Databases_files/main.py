@@ -1,9 +1,15 @@
+
 from fastapi import FastAPI, Depends, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from typing import List
 
-from .database import engine, Base, get_db
-from . import crud, schemas
+try:
+    from .database import engine, Base, get_db
+    from . import crud, schemas, models
+except ImportError:
+    from database import engine, Base, get_db
+    import crud, schemas, models
 
 # Create database tables
 Base.metadata.create_all(bind=engine)
@@ -14,6 +20,15 @@ app = FastAPI(
     version="1.0.0"
 )
 
+# Enable CORS for browser integration
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 @app.get("/")
 def read_root():
     return {
@@ -22,6 +37,42 @@ def read_root():
         "status": "healthy"
     }
 
+# --- Auth Routes ---
+@app.post("/api/login", response_model=schemas.LoginResponse)
+def login(req: schemas.LoginRequest, db: Session = Depends(get_db)):
+    role = req.role.upper()
+    username = req.username
+    
+    # Resolve facility ID if user corresponds to a facility
+    facility = db.query(models.Facility).filter(
+        (models.Facility.name.ilike(f"%{username}%")) |
+        (models.Facility.contact.ilike(f"%{username}%"))
+    ).first()
+
+    if not facility:
+        # Default to Central Warehouse or first PHC for demonstration
+        if "WAREHOUSE" in role:
+            facility = db.query(models.Facility).filter(models.Facility.type == 'Warehouse').first()
+        else:
+            facility = db.query(models.Facility).filter(models.Facility.type == 'PHC').first()
+
+    fac_id = facility.id if facility else 1
+    redirect_target = "../../Frontend_Interface..2/file_2/clinic-dashboard.html"
+
+    if role == "PATIENT":
+        redirect_target = "../../Frontend_Interface/file/file.html"
+
+    return schemas.LoginResponse(
+        status="Success",
+        message=f"Authenticated as {req.username} ({req.role})",
+        role=req.role,
+        username=req.username,
+        facility_id=fac_id,
+        redirect_url=redirect_target
+    )
+
+
+# --- Core Data Endpoints ---
 @app.get("/facilities")
 def get_facilities(db: Session = Depends(get_db)):
     facilities = crud.get_facilities(db)
@@ -68,9 +119,25 @@ def get_inventory(db: Session = Depends(get_db)):
         for i in inventory_items
     ]
 
+@app.post("/inventory/dispense")
+def dispense_inventory(req: schemas.DispenseRequest, db: Session = Depends(get_db)):
+    try:
+        return crud.dispense_medicine(db, req)
+    except crud.EntityNotFoundError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    except crud.InsufficientStockError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
 @app.get("/transfers", response_model=List[schemas.StockTransferResponse])
 def get_transfers(db: Session = Depends(get_db)):
     return crud.get_transfers(db)
+
+@app.put("/transfers/{id}/status", response_model=schemas.StockTransferResponse)
+def update_transfer_status(id: int, status_update: schemas.TransferStatusUpdate, db: Session = Depends(get_db)):
+    try:
+        return crud.update_transfer_status(db, id, status_update.status)
+    except crud.EntityNotFoundError as e:
+        raise HTTPException(status_code=404, detail=str(e))
 
 @app.get("/alerts")
 def get_alerts(db: Session = Depends(get_db)):

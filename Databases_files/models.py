@@ -1,7 +1,12 @@
+
 from sqlalchemy import Column, Integer, String, Float, ForeignKey, DateTime, Date
 from sqlalchemy.orm import relationship
 import datetime
-from .database import Base
+try:
+    from .database import Base
+except ImportError:
+    from database import Base
+
 
 class Facility(Base):
     __tablename__ = "facilities"

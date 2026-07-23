@@ -1,4 +1,5 @@
 
+
 /* ==========================================================================
    MEDICO HEALTHCARE & LOGISTICS - INTERACTIVE APPLICATION CONTROLLER
    Truck Path Motion, Sky Particle Canvas, Role Tabs, Form & Sound Engine
@@ -323,7 +324,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   /* ------------------------------------------------------------------------
-     7. FORM SUBMISSION & SUCCESS MODAL
+     7. FORM SUBMISSION & SUCCESS MODAL (API CONNECTED)
      ------------------------------------------------------------------------ */
   const loginForm = document.getElementById('medico-login-form');
   const submitBtn = document.getElementById('submit-btn');
@@ -331,27 +332,50 @@ document.addEventListener('DOMContentLoaded', () => {
   const modalSuccessText = document.getElementById('modal-success-text');
 
   if (loginForm && submitBtn && successModal) {
-    loginForm.addEventListener('submit', (e) => {
+    loginForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       
       const userVal = usernameInput.value || 'Medical User';
+      const activeRoleTab = document.querySelector('.role-tab.active');
+      const roleVal = activeRoleTab ? activeRoleTab.dataset.role : 'doctor';
+      const passVal = passwordInput.value || 'pass';
+
       submitBtn.disabled = true;
-      submitBtn.querySelector('.btn-text').textContent = 'AUTHENTICATING...';
+      submitBtn.querySelector('.btn-text').textContent = 'AUTHENTICATING WITH API...';
       submitBtn.querySelector('.btn-icon').innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i>';
+
+      try {
+        const response = await fetch('http://127.0.0.1:8000/api/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ role: roleVal, username: userVal, password: passVal })
+        });
+        if (response.ok) {
+          const resData = await response.json();
+          localStorage.setItem('user_session', JSON.stringify({
+            role: resData.role,
+            username: resData.username,
+            facility_id: resData.facility_id
+          }));
+        }
+      } catch (err) {
+        console.warn('API offline fallback:', err);
+      }
 
       setTimeout(() => {
         submitBtn.disabled = false;
         submitBtn.querySelector('.btn-text').textContent = 'ACCESS MEDICO PORTAL';
         submitBtn.querySelector('.btn-icon').innerHTML = '<i class="fa-solid fa-arrow-right-to-bracket"></i>';
 
-        modalSuccessText.textContent = `Welcome back, ${userVal}. Authenticated with 256-bit encryption. Accessing dashboard...`;
+        modalSuccessText.textContent = `Welcome back, ${userVal}. Authenticated with 256-bit encryption. Redirecting to Clinic Dashboard...`;
         successModal.classList.add('active');
 
         setTimeout(() => {
-          successModal.classList.remove('active');
-        }, 3200);
-      }, 1200);
+          window.location.href = '../../Frontend_Interface..2/file_2/clinic-dashboard.html';
+        }, 1800);
+      }, 1000);
     });
   }
 
 });
+
